@@ -1,133 +1,122 @@
 // Welcome Message
 
-document.addEventListener("DOMContentLoaded", () => {
+document.getElementById("welcomeMessage")
+.innerHTML =
+"Welcome to Student Opportunity Finder";
 
-const welcome =
-document.getElementById("welcomeMessage");
+document.getElementById("currentDate")
+.innerHTML =
+new Date().toDateString();
 
-if(welcome){
 
-    welcome.innerHTML =
-    "🚀 Welcome to Student Opportunity Finder";
-
-}
-
-const date =
-document.getElementById("currentDate");
-
-if(date){
-
-    date.innerHTML =
-    new Date().toDateString();
-
-}
-
-animateCounter(
-    "opportunitiesCounter",
-    10000,
-    "+"
-);
-
-animateCounter(
-    "studentsCounter",
-    5000,
-    "+"
-);
-
-animateCounter(
-    "companiesCounter",
-    100,
-    "+"
-);
-
-});
-
-// Counter Animation
+// Animated Counters
 
 function animateCounter(
 id,
-target,
-suffix
+target
 ){
-
-let element =
-document.getElementById(id);
-
-if(!element) return;
 
 let count = 0;
 
-let step =
-Math.ceil(target / 100);
+const increment =
+target / 100;
 
-let interval =
+const counter =
 setInterval(() => {
 
-    count += step;
+count += increment;
 
-    if(count >= target){
+if(count >= target){
 
-        count = target;
+count = target;
 
-        clearInterval(interval);
+clearInterval(counter);
 
-    }
+}
 
-    element.innerHTML =
-    count + suffix;
+document.getElementById(id)
+.innerText =
+Math.floor(count) + "+";
 
 },20);
 
 }
 
-// Search Opportunities
+animateCounter(
+"opportunitiesCounter",
+10000
+);
+
+animateCounter(
+"studentsCounter",
+5000
+);
+
+animateCounter(
+"companiesCounter",
+100
+);
+
+
+// Search
 
 function searchOpportunities(){
 
-let input =
-document.getElementById(
-"searchInput")
+const input =
+document
+.getElementById(
+"searchInput"
+)
 .value
 .toLowerCase();
 
-let cards =
-document.querySelectorAll(
-".opportunity-card");
+const cards =
+document
+.querySelectorAll(
+".opportunity-card"
+);
 
-cards.forEach(card => {
+cards.forEach(card=>{
 
-    let text =
-    card.innerText.toLowerCase();
+const title =
+card
+.querySelector("h3")
+.innerText
+.toLowerCase();
 
-    if(text.includes(input)){
+if(
+title.includes(input)
+){
 
-        card.style.display =
-        "block";
+card.style.display =
+"block";
 
-    }
+}else{
 
-    else{
+card.style.display =
+"none";
 
-        card.style.display =
-        "none";
-
-    }
+}
 
 });
 
 }
 
+
 // Save Opportunity
 
-function saveOpportunity(title){
+function saveOpportunity(
+name
+){
 
 let saved =
 JSON.parse(
 localStorage.getItem(
-"savedOpportunities")
+"savedOpportunities"
+)
 ) || [];
 
-saved.push(title);
+saved.push(name);
 
 localStorage.setItem(
 "savedOpportunities",
@@ -135,140 +124,199 @@ JSON.stringify(saved)
 );
 
 alert(
-title +
-" saved successfully ✅"
+name +
+" Saved Successfully!"
 );
 
 }
+
 
 // Login Validation
 
 function validateLogin(){
 
-let email =
-document.getElementById(
-"email").value;
+const email =
+document
+.getElementById(
+"email"
+).value;
 
-let password =
-document.getElementById(
-"password").value;
+const password =
+document
+.getElementById(
+"password"
+).value;
 
-if(email === ""
-|| password === ""){
+if(
+email === "" ||
+password === ""
+){
 
-    alert(
-    "Please fill all fields"
-    );
+alert(
+"Please fill all fields"
+);
 
-    return;
+return;
 
 }
 
-if(password.length < 6){
+if(
+password.length < 6
+){
 
-    alert(
-    "Password must contain at least 6 characters"
-    );
+alert(
+"Password must contain at least 6 characters"
+);
 
-    return;
+return;
 
 }
 
 alert(
-"Login Successful 🚀"
+"Login Successful"
 );
 
 }
 
-// AI Recommendation
+
+// AI Advisor
 
 function analyzeSkills(){
 
-let skills =
-document.getElementById(
-"skillInput")
+const skills =
+document
+.getElementById(
+"skillInput"
+)
 .value
 .toLowerCase();
 
-let result =
-document.getElementById(
-"result");
+let result = "";
 
-if(skills.includes("html")
-|| skills.includes("css")
-|| skills.includes("javascript")){
-
-    result.innerHTML =
-
-    `
-    <h3>
-    Recommended For You
-    </h3>
-
-    <p>
-    ✅ Frontend Internship
-    </p>
-
-    <p>
-    ✅ React Course
-    </p>
-
-    <p>
-    ✅ Web Hackathon
-    </p>
-    `;
-
-}
-
-else if(
-skills.includes("python")
-|| skills.includes("ai")
+if(
+skills.includes("html") ||
+skills.includes("css") ||
+skills.includes("javascript")
 ){
 
-    result.innerHTML =
+result = `
+Recommended:
 
-    `
-    <h3>
-    Recommended For You
-    </h3>
+Frontend Internship
 
-    <p>
-    ✅ AI Internship
-    </p>
+React Course
 
-    <p>
-    ✅ Machine Learning Course
-    </p>
-
-    <p>
-    ✅ AI Hackathon
-    </p>
-    `;
+Web Hackathon
+`;
 
 }
+else if(
+skills.includes("python")
+){
 
+result = `
+Recommended:
+
+AI Internship
+
+Data Science Program
+
+Machine Learning Course
+`;
+
+}
 else{
 
-    result.innerHTML =
+result = `
+Recommended:
 
-    `
-    <h3>
-    Recommended For You
-    </h3>
+Explore Opportunities
+`;
+}
 
-    <p>
-    Explore Internships,
-    Certifications and
-    Hackathons
-    </p>
-    `;
+document
+.getElementById(
+"result"
+)
+.innerHTML = result;
 
 }
 
-}
 
-// Console Test
+// Load Opportunities From Supabase
 
-console.log(
-"JavaScript Connected Successfully 🚀"
+async function loadOpportunities(){
+
+try{
+
+const response =
+await fetch(
+"http://localhost:5000/api/opportunities"
 );
+
+const result =
+await response.json();
+
+const container =
+document.getElementById(
+"opportunityContainer"
+);
+
+if(
+!container
+) return;
+
+container.innerHTML = "";
+
+result.opportunities.forEach(
+opportunity => {
+
+container.innerHTML += `
+
+<article
+class="opportunity-card">
+
+<h3>
+${opportunity.title}
+</h3>
+
+<p>
+${opportunity.description}
+</p>
+
+<p>
+<strong>
+${opportunity.company}
+</strong>
+</p>
+
+<button
+onclick="
+window.open(
+'${opportunity.apply_link}',
+'_blank'
+)
+">
+
+Apply Now
+
+</button>
+
+</article>
+
+`;
+
+});
+
+}catch(error){
+
+console.error(
+"Error Loading Opportunities:",
+error
+);
+
+}
+
+}
+
+loadOpportunities();
